@@ -32,4 +32,47 @@ chain = prompt | model | output_parser
 
 chain.invoke({"topic": "ice cream"})
 
+# invoke
+# stream
+# batch
+# async
 
+# LLM instead of chat model
+# If we want to use a completion endpoint instead of a chat endpoint
+# llm = OpenAI(model="gpt-3.5-turbo-instruct")
+
+# Runtime configurability
+# If we wanted to make the choice of chat model or LLM configurable at runtime:
+# from langchain_core.runnables import ConfigurableField
+# configurable_model = model.configurable_alternatives(
+#     ConfigurableField(id="model"), 
+#     default_key="chat_openai", 
+#     openai=llm,
+#     anthropic=anthropic,
+# )
+# configurable_chain = (
+#     {"topic": RunnablePassthrough()} 
+#     | prompt 
+#     | configurable_model 
+#     | output_parser
+# )
+# configurable_chain.invoke(
+#     "ice cream", 
+#     config={"model": "openai"}
+# )
+# stream = configurable_chain.stream(
+#     "ice cream", 
+#     config={"model": "anthropic"}
+# )
+# for chunk in stream:
+#     print(chunk, end="", flush=True)
+# configurable_chain.batch(["ice cream", "spaghetti", "dumplings"])
+
+# Logging
+
+# Fallbacks
+# If we wanted to add fallback logic, in case one model API is down:
+# fallback_chain = chain.with_fallbacks([anthropic_chain])
+# fallback_chain.invoke("ice cream")
+# await fallback_chain.ainvoke("ice cream")
+# fallback_chain.batch(["ice cream", "spaghetti", "dumplings"])
